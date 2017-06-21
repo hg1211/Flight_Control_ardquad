@@ -4,7 +4,9 @@
 
 int gyro_x, gyro_y, gyro_z;
 
-long acc_x, acc_y, acc_z, acc_total_vector;
+float acc_x, acc_y, acc_z, acc_total_vector;
+long acc_inputx, acc_inputy, acc_inputz;
+
 
 long gyro_x_cal, gyro_y_cal, gyro_z_cal;
 
@@ -147,9 +149,17 @@ void read_mpu_6050_data()
  Wire.endTransmission();
  Wire.requestFrom(0x68,14);
   while(Wire.available() < 14);
-  acc_x = Wire.read()<<8|Wire.read();
-  acc_y = Wire.read()<<8|Wire.read();  
-  acc_z = Wire.read()<<8|Wire.read();
+  acc_inputx = Wire.read()<<8|Wire.read();
+  acc_inputy = Wire.read()<<8|Wire.read();  
+  acc_inputz = Wire.read()<<8|Wire.read();
+  processdata();
+  }
+  void processdata(){
+  acc_x=acc_inputx/4096.0;
+  acc_y=acc_inputy/4096.0;
+  acc_z=acc_inputz/4096.0;
+  }
+  
 
 
   Wire.read();//these 16 bits are for temperature measurement
